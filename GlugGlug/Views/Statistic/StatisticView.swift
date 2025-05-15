@@ -50,6 +50,33 @@ struct StatisticView: View {
                 ChartView(selectedMode: $selectedMode)
                 
                 HStack {
+                    Image(systemName: "warninglight.fill")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 35, height: 35)
+                        .foregroundColor(.blue)
+                    Spacer()
+                    VStack(alignment: .leading) {
+                        Text("Awesome job! You hit your water goal 4 out of 7 days! 🔥").font(.footnote).italic()
+                        Text("Go for a perfect streak next week — you’re super close!").font(.footnote).bold()
+                    }
+                }
+                .padding()
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .background(
+                    RoundedRectangle(cornerRadius: 16)
+                        .fill( Color.blue.opacity(0.1))
+                )
+                .overlay(
+                    RoundedRectangle(cornerRadius: 16)
+                        .stroke(Color.blue.opacity(0.2), lineWidth: 2)
+                )
+                .cornerRadius(16)
+                .shadow(color: Color.black.opacity(0.05), radius: 4, x: 0, y: 2)
+                .padding()
+                
+                
+                HStack {
                     Spacer()
                     
                     StatCardView(
@@ -76,42 +103,17 @@ struct StatisticView: View {
             }
             .navigationTitle("Statistics")
             .navigationBarItems(
-                trailing: Button("Add") {
+                trailing: Button(action: {
                     showAddManualView.toggle()
+                }) {
+                    Image(systemName: "plus.circle")
+                        .font(.system(size: 20, weight: .bold))
                 }
             )
             .sheet(isPresented: $showAddManualView) {
                 AddManualView()
             }
-            //            .toolbar {
-            //                ToolbarItem(placement: .navigation) {
-            //                    VStack(alignment: .leading) {
-            //                        Text("Statistics")
-            //                            .font(.title)
-            //                            .bold()
-            //
-            //                        switch selectedMode {
-            //                        case .weekly:
-            //                            Text("This Week")
-            //                                .font(.title2)
-            //                                .foregroundStyle(.gray)
-            //                        case .monthly:
-            //                            Text("This Month")
-            //                                .font(.title2)
-            //                                .foregroundStyle(.gray)
-            //                        case .yearly:
-            //                            Text("This Year")
-            //                                .font(.title2)
-            //                                .foregroundStyle(.gray)
-            //                        }
-            //
-            //                    }
-            //                    .padding(.top, 20)
-            //                }
-            //            }
-//            .padding(.top, 20)
         }
-//        .padding()
         .onAppear {
             HealthKitManager.shared.getStreak { streak in
                 self.streak = streak
@@ -143,12 +145,9 @@ struct StatisticInformationView: View {
                 .aspectRatio(contentMode: .fit)
                 .frame(width: 35, height: 35)
                 .foregroundColor(.blue)
-                .symbolEffect(.bounce)
         }
         .padding()
         .overlay(RoundedRectangle(cornerRadius: 4).stroke(lineWidth: 2).foregroundColor(.blue))
-        
-        
     }
 }
 
