@@ -40,12 +40,12 @@ class ReminderViewModel: ObservableObject {
     
     func saveAlarms() {
         if let encoded = try? JSONEncoder().encode(listAlarms) {
-            UserDefaults.standard.set(encoded, forKey: userDefaultKey)
+            UserDefaults(suiteName: "group.com.nfajarsa.GlugGlug")?.set(encoded, forKey: userDefaultKey)
         }
     }
     
     func loadAlarms() {
-        if let savedData = UserDefaults.standard.data(forKey: userDefaultKey),
+        if let savedData = UserDefaults(suiteName: "group.com.nfajarsa.GlugGlug")?.data(forKey: userDefaultKey),
            let decoded = try? JSONDecoder().decode([Reminder].self, from: savedData) {
             listAlarms = decoded
         }

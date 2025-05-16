@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import WidgetKit
 
 enum ActiveSheet: Identifiable {
     case editGoal
@@ -32,9 +33,9 @@ struct HomeView: View {
     
     @State private var selectedIndex: Int = 0
     
-    @State private var progress: Int = 0
-    
     @State private var streak: Int = 0
+    
+    @AppStorage("progress", store: UserDefaults(suiteName: "group.com.nfajarsa.GlugGlug")) private var progress: Int = 0
     
     var body: some View {
         NavigationStack {
@@ -123,11 +124,14 @@ struct HomeView: View {
             }
             
             HealthKitManager.shared.getConsumedWaterToday { data in DispatchQueue.main.async {
-                self.progress = data ?? 0
+                progress = data ?? 0
+                WidgetCenter.shared.reloadTimelines(ofKind: "WaterTrackerWidget")
             }}
             
             HealthKitManager.shared.startObservingWaterIntake { newProgress in
-                self.progress = newProgress
+                progress = newProgress
+                print("progress", progress)
+                WidgetCenter.shared.reloadTimelines(ofKind: "WaterTrackerWidget")
             }
             
             HealthKitManager.shared.getStreak { streak in

@@ -11,7 +11,7 @@ import SwiftUI
 struct CircularProgressView: View {
     var progress: Double // nilai antara 0.0 sampai 1.0
     var lineWidth: CGFloat = 10
-    var size: CGFloat = 64
+    var size: CGFloat = 68
     var color: Color = Color("PrimaryColor")
     var icon: String = "drop.fill" // SF Symbol
 
@@ -33,7 +33,7 @@ struct CircularProgressView: View {
 
             // Icon di tengah
             Image(systemName: icon)
-                .font(.system(size: size * 0.3))
+                .font(.system(size: size * 0.35))
                 .foregroundColor(color)
         }
         .frame(width: size, height: size)
