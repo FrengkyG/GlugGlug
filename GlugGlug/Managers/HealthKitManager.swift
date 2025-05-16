@@ -228,12 +228,19 @@ class HealthKitManager: ObservableObject {
             let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "dd"
             
+            
             statsCollection.enumerateStatistics(from: startOfMonth, to: endOfMonth) { statistics, _ in
                 let date = statistics.startDate
                 let dateString = dateFormatter.string(from: date)
-                let drinkVolume = statistics.sumQuantity()?.doubleValue(for: self.volumeUnit) ?? 0
-                drinkData.append((dateString, Int(drinkVolume)))
+                let totalVolume = statistics.sumQuantity()?.doubleValue(for: self.volumeUnit) ?? 0
+                
+                let daysInInterval = calendar.dateComponents([.day], from: statistics.startDate, to: statistics.endDate).day! + 1
+                let averageVolume = daysInInterval > 0 ? totalVolume / Double(daysInInterval) : 0
+                                
+                drinkData.append((dateString, Int(averageVolume)))
             }
+            
+            
             
             DispatchQueue.main.async {
                 completion(drinkData)
@@ -279,8 +286,12 @@ class HealthKitManager: ObservableObject {
             statsCollection.enumerateStatistics(from: startOfYear, to: endOfYear) { statistics, _ in
                 let date = statistics.startDate
                 let dateString = dateFormatter.string(from: date)
-                let drinkVolume = statistics.sumQuantity()?.doubleValue(for: self.volumeUnit) ?? 0
-                drinkData.append((dateString, Int(drinkVolume)))
+                let totalVolume = statistics.sumQuantity()?.doubleValue(for: self.volumeUnit) ?? 0
+                
+                let daysInInterval = calendar.dateComponents([.day], from: statistics.startDate, to: statistics.endDate).day! + 1
+                let averageVolume = daysInInterval > 0 ? totalVolume / Double(daysInInterval) : 0
+
+                drinkData.append((dateString, Int(averageVolume)))
             }
             
             DispatchQueue.main.async {
