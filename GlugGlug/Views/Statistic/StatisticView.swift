@@ -18,88 +18,64 @@ struct StatisticView: View {
     
     var body: some View {
         NavigationStack{
-            VStack {
-                HStack {
-                    switch selectedMode {
-                    case .weekly:
-                        Text("This Week")
-                            .font(.title3)
-                            .foregroundStyle(.gray)
-                    case .monthly:
-                        Text("This Month")
-                            .font(.title3)
-                            .foregroundStyle(.gray)
-                    case .yearly:
-                        Text("This Year")
-                            .font(.title3)
-                            .foregroundStyle(.gray)
+            ScrollView(.vertical, showsIndicators: false) {
+                
+                VStack {
+                    HStack {
+                        switch selectedMode {
+                        case .weekly:
+                            Text("This Week")
+                                .font(.title3)
+                                .foregroundStyle(.gray)
+                        case .monthly:
+                            Text("This Month")
+                                .font(.title3)
+                                .foregroundStyle(.gray)
+                        case .yearly:
+                            Text("This Year")
+                                .font(.title3)
+                                .foregroundStyle(.gray)
+                        }
+                        Spacer()
                     }
-                    Spacer()
-                }
-                .padding(.horizontal)
-                
-                Picker("", selection: $selectedMode) {
-                    Text("Week").tag(StatisticMode.weekly)
-                    Text("Month").tag(StatisticMode.monthly)
-                    Text("Year").tag(StatisticMode.yearly)
-                }
-                .pickerStyle(.segmented)
-                .padding(.horizontal)
-                .padding(.vertical, 8)
-                
-                ChartView(selectedMode: $selectedMode)
-                
-                HStack {
-                    Image(systemName: "warninglight.fill")
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: 35, height: 35)
-                        .foregroundColor(.blue)
-                    Spacer()
-                    VStack(alignment: .leading) {
-                        Text("Awesome job! You hit your water goal 4 out of 7 days! 🔥").font(.footnote).italic()
-                        Text("Go for a perfect streak next week — you’re super close!").font(.footnote).bold()
+                    .padding(.horizontal)
+                    
+                    Picker("", selection: $selectedMode) {
+                        Text("Week").tag(StatisticMode.weekly)
+                        Text("Month").tag(StatisticMode.monthly)
+                        Text("Year").tag(StatisticMode.yearly)
                     }
-                }
-                .padding()
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .background(
-                    RoundedRectangle(cornerRadius: 16)
-                        .fill( Color.blue.opacity(0.1))
-                )
-                .overlay(
-                    RoundedRectangle(cornerRadius: 16)
-                        .stroke(Color.blue.opacity(0.2), lineWidth: 2)
-                )
-                .cornerRadius(16)
-                .shadow(color: Color.black.opacity(0.05), radius: 4, x: 0, y: 2)
-                .padding()
-                
-                
-                HStack {
-                    Spacer()
+                    .pickerStyle(.segmented)
+                    .padding(.horizontal)
+                    .padding(.vertical, 8)
                     
-                    StatCardView(
-                        iconName: "flame.fill",
-                        title: "Streak",
-                        value: "\(streak) \(streak == 1 ? "Day" : "Days")",
-                        backgroundColor: Color.blue.opacity(0.1)
-                    )
-                    
-                    Spacer()
-                    
-                    StatCardView(
-                        iconName: "checkmark.seal.fill",
-                        title: "Goal Hits",
-                        value: "\(goalAchieved) \(goalAchieved == 1 ? "Time" : "Times")",
-                        backgroundColor: Color.blue.opacity(0.1)
-                    )
+                    ChartView(selectedMode: $selectedMode)
+                                        
+                    HStack {
+                        Spacer()
+                        
+                        StatCardView(
+                            iconName: "flame.fill", 
+                            title: "Streak",
+                            value: "\(streak) \(streak == 1 ? "Day" : "Days")",
+                            backgroundColor: Color.blue.opacity(0.1)
+                        )
+                        
+                        Spacer()
+                        
+                        StatCardView(
+                            iconName: "checkmark.seal.fill",
+                            title: "Goal Hits",
+                            value: "\(goalAchieved) \(goalAchieved == 1 ? "Time" : "Times")",
+                            backgroundColor: Color.blue.opacity(0.1)
+                        )
+                        
+                        Spacer()
+                    }
+                    .padding(.horizontal, 8)
                     
                     Spacer()
                 }
-                .padding(.horizontal, 8)
-                
-                Spacer()
             }
             .navigationTitle("Statistics")
             .navigationBarItems(
@@ -110,6 +86,7 @@ struct StatisticView: View {
                         .font(.system(size: 20, weight: .bold))
                 }
             )
+            .navigationBarTitleDisplayMode(.large)
             .sheet(isPresented: $showAddManualView) {
                 AddManualView()
             }

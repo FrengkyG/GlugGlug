@@ -25,7 +25,7 @@ struct StatCardView: View {
             }
 
             Text(value)
-                .font(.system(size: 28, weight: .bold))
+                .font(.system(size: 22, weight: .bold))
                 .foregroundColor(.blue)
         }
         .padding()
