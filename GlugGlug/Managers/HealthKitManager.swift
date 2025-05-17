@@ -404,3 +404,13 @@ class HealthKitManager: ObservableObject {
         healthStore.execute(query)
     }
 }
+
+extension HealthKitManager {
+    func getThisWeekStatisticAsync() async -> [(date: String, volume: Int)] {
+        await withCheckedContinuation { continuation in
+            self.getThisWeekStatistic { data in
+                continuation.resume(returning: data)
+            }
+        }
+    }
+}

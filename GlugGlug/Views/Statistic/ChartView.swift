@@ -19,17 +19,21 @@ struct ChartView: View {
     @State private var dayDrink: [(String, Int)] = []
     @State private var selectedDate: String? = nil
     @State private var currentVolume: Int = 0
+    @State private var goal: Int = 2500
+    @State private var averageIntake: Int = 0
+    @State private var achievedGoalCount: Int = 0
+    @State private var totalData: Int = 0
     
     var body: some View {
         VStack {
             if dayDrink.isEmpty {
                 Text("Loading...")
             } else {
-                ZStack(alignment: .topLeading) {
+                VStack(alignment: .leading) {
                     VStack(alignment: .leading){
                         Text("Average").font(.system(size: 16, weight: .bold)).foregroundStyle(Color(hex: "#999999"))
                         HStack(alignment: .firstTextBaseline) {
-                            Text("2.750").font(.system(size: 24, weight: .bold)).foregroundStyle(Color(hex: "#666666"))
+                            Text("\(averageIntake)").font(.system(size: 24, weight: .bold)).foregroundStyle(Color(hex: "#666666"))
                             Text("mL").font(.system(size: 16, weight: .bold)).foregroundStyle(Color(hex: "#999999"))
                         }
                     }.padding(.horizontal)
@@ -40,20 +44,13 @@ struct ChartView: View {
                             x: .value("Day", date),
                             y: .value("Volume (mL)", vol)
                         )
-                        .foregroundStyle(selectedDate == date ? Color.orange : Color.blue)
-                        .annotation(position: .top) {
-                            if (vol > 0) {
-                                Text("\(Double(vol)/1000, specifier: "%.2f") L")
-                                    .font(.footnote)
-                                    .foregroundColor(selectedDate == date ? .orange : .blue)
-                            }
-                        }
+                        .foregroundStyle(selectedDate == date ? Color.mint : Color.blue)
                         
-                        RuleMark(y: .value("goal", 2000))
+                        RuleMark(y: .value("goal", goal))
                             .foregroundStyle(.red)
                             .lineStyle(StrokeStyle(lineWidth: 1, dash: [5]))
                             .annotation(position: .trailing, alignment: .leading) {
-                                Text("Goal\n2000 mL")
+                                Text("Goal\n\(goal) mL")
                                     .font(.system(size: 8))
                                     .padding(4)
                                     .background(Color.red)
@@ -61,7 +58,6 @@ struct ChartView: View {
                                     .foregroundStyle(.white)
                             }
                         
-    
                         if selectedDate == date {
                             selectedDateRuleMark(date: date, volume: currentVolume)
                         }
@@ -75,40 +71,81 @@ struct ChartView: View {
                     .chartXAxis{
                         AxisMarks(stroke: StrokeStyle(lineWidth: 0))
                     }
-                    .frame(height: 250)
+                    .chartYScale(domain: 0...maxYValue())
+                    .frame(height: 175)
                     .padding(.horizontal)
                 }
+                ChartDescriptionCardView(selectedMode: selectedMode, achievedGoalCount: achievedGoalCount, totalData: totalData)
             }
         }
         .onAppear {
             loadStatistics()
+            getGoal()
         }.onChange(of: selectedMode) {
             loadStatistics()
         }
     }
     
+    private func maxYValue() -> Int {
+        var maxWithBuffer: Int = 3000
+        let maxDrinkVolume = dayDrink.map { $0.1 }.max() ?? 2000
+        
+        if (maxDrinkVolume < goal) {
+            maxWithBuffer = goal + 500
+        } else {
+            maxWithBuffer = maxDrinkVolume + 500
+        }
+        
+        maxWithBuffer = Int(ceil(Double(maxWithBuffer) / 1000.0)) * 1000
+
+        return max(maxWithBuffer, goal)
+    }
+    
     private func selectedDateRuleMark(date: String, volume: Int) -> some ChartContent {
-        return RuleMark(x: .value("Day", date))
-            .foregroundStyle(Color.orange)
-            .lineStyle(StrokeStyle(lineWidth: 2))
-            .annotation(position: .top, alignment: .center) {
-                VStack(spacing: 4) {
-                    Text("Volume")
-                        .font(.caption2)
-                        .foregroundColor(.white)
-                    Text("\(volume) mL")
-                        .font(.caption)
-                        .fontWeight(.bold)
-                        .foregroundColor(.white)
-                }
-                .padding(6)
-                .background(
-                    RoundedRectangle(cornerRadius: 8)
-                        .fill(Color.orange)
-                        .shadow(radius: 3)
-                )
-                .offset(y: 47)
+        //        return RuleMark(x: .value("Day", date))
+        //            .foregroundStyle(Color.orange)
+        //            .lineStyle(StrokeStyle(lineWidth: 2))
+        //            .annotation(position: .top, alignment: .center) {
+        //                VStack(spacing: 4) {
+        //                    Text("Volume")
+        //                        .font(.caption2)
+        //                        .foregroundColor(.white)
+        //                    Text("\(volume) mL")
+        //                        .font(.caption)
+        //                        .fontWeight(.bold)
+        //                        .foregroundColor(.white)
+        //                }
+        //                .padding(6)
+        //                .background(
+        //                    RoundedRectangle(cornerRadius: 8)
+        //                        .fill(Color.orange)
+        //                        .shadow(radius: 3)
+        //                )
+        //                .offset(y: 47)
+        //            }
+        return PointMark(
+            x: .value("Day", date),
+            y: .value("Volume (mL)", volume)
+        )
+        .foregroundStyle(Color.mint)
+        .symbolSize(100)
+        .annotation(position: .top, alignment: .center) {
+            VStack(spacing: 4) {
+                Text("Volume")
+                    .font(.caption2)
+                    .foregroundColor(.white)
+                Text("\(volume) mL")
+                    .font(.caption)
+                    .fontWeight(.bold)
+                    .foregroundColor(.white)
             }
+            .padding(6)
+            .background(
+                RoundedRectangle(cornerRadius: 8)
+                    .fill(Color.mint)
+                    .shadow(radius: 3)
+            )
+        }
     }
     
     private func loadStatistics() {
@@ -116,22 +153,34 @@ struct ChartView: View {
             HealthKitManager.shared.getThisWeekStatistic { data in
                 DispatchQueue.main.async {
                     self.dayDrink = data
+                    self.averageIntake = data.map { $0.1 }.reduce(0, +) / max(data.count, 1)
+                    self.achievedGoalCount = data.filter { $0.1 >= self.goal }.count
+                    self.totalData = data.count
                 }
             }
         } else if selectedMode == .monthly {
             HealthKitManager.shared.getThisMonthStatistic { data in
                 DispatchQueue.main.async {
                     self.dayDrink = data
+                    self.averageIntake = data.map { $0.1 }.reduce(0, +) / max(data.count, 1)
+                    self.achievedGoalCount = data.filter { $0.1 >= self.goal }.count
+                    self.totalData = data.count
                 }
             }
         } else if selectedMode == .yearly {
             HealthKitManager.shared.getThisYearStatistic { data in
                 DispatchQueue.main.async {
                     self.dayDrink = data
+                    self.averageIntake = data.map { $0.1 }.reduce(0, +) / max(data.count, 1)
+                    self.achievedGoalCount = data.filter { $0.1 >= self.goal }.count
+                    self.totalData = data.count
                 }
             }
         }
-        
+    }
+    
+    private func getGoal() {
+        goal = (UserDefaults.standard.object(forKey: "goal") as? Int) ?? 2500
     }
     
     @ViewBuilder

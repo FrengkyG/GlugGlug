@@ -6,5 +6,9 @@
 	<false/>
 	<key>UILaunchScreen</key>
 	<dict/>
+    <key>NSUserActivityTypes</key>
+    <array>
+        <string>INShortcut</string>
+    </array>
 </dict>
 </plist>
