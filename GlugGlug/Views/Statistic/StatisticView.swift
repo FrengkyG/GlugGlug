@@ -18,8 +18,6 @@ struct StatisticView: View {
     
     var body: some View {
         NavigationStack{
-            ScrollView(.vertical, showsIndicators: false) {
-                
                 VStack {
                     HStack {
                         switch selectedMode {
@@ -76,7 +74,6 @@ struct StatisticView: View {
                     
                     Spacer()
                 }
-            }
             .navigationTitle("Statistics")
             .navigationBarItems(
                 trailing: Button(action: {
