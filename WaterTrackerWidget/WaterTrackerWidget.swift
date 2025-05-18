@@ -17,39 +17,30 @@ struct Provider: AppIntentTimelineProvider {
             date: Date(),
             configuration: ConfigurationAppIntent(),
             currentIntake: data.currentWaterIntake(),
-            targetIntake: 2500
+            targetIntake: data.targetWaterIntake()
         )
     }
     
     func snapshot(for configuration: ConfigurationAppIntent, in context: Context) async -> SimpleEntry {
-        let targetIntake = (UserDefaults(suiteName: "group.com.nfajarsa.GlugGlug")?.object(forKey: "goal") as? Int) ?? 2500
         return SimpleEntry(
             date: Date(),
             configuration: configuration,
             currentIntake: data.currentWaterIntake(),
-            targetIntake: targetIntake
+            targetIntake: data.targetWaterIntake()
         )
     }
-
+    
     
     func timeline(for configuration: ConfigurationAppIntent, in context: Context) async -> Timeline<SimpleEntry> {
-        let targetIntake = (UserDefaults(suiteName: "group.com.nfajarsa.GlugGlug")?.object(forKey: "goal") as? Int) ?? 2500
-        print(targetIntake)
-        print(data.currentWaterIntake())
-
+        
         let entry = SimpleEntry(
             date: Date(),
             configuration: configuration,
             currentIntake: data.currentWaterIntake(),
-            targetIntake: targetIntake
+            targetIntake: data.targetWaterIntake()
         )
         return Timeline(entries: [entry], policy: .after(Date().addingTimeInterval(1)))
     }
-
-    
-    //    func relevances() async -> WidgetRelevances<ConfigurationAppIntent> {
-    //        // Generate a list containing the contexts this widget is relevant in.
-    //    }
 }
 
 struct SimpleEntry: TimelineEntry {
@@ -62,6 +53,31 @@ struct SimpleEntry: TimelineEntry {
 
 struct WaterTrackerWidgetEntryView : View {
     var entry: Provider.Entry
+    @Environment(\.widgetFamily) var family
+    
+    var body: some View {
+        switch family {
+        case .accessoryCircular:
+            CircularAccessoryView(entry:entry)
+        default:
+            RegularWidgetView(entry: entry)
+        }
+    }
+}
+
+struct CircularAccessoryView: View {
+    let entry: Provider.Entry
+    
+    var body: some View {
+        VStack {
+            CircularProgressView(progress: Double(entry.currentIntake) / Double(entry.targetIntake), lineWidth:9, size: 50)
+                .padding()
+        }
+    }
+}
+
+struct RegularWidgetView: View {
+    let entry: Provider.Entry
     
     var body: some View {
         ZStack (alignment: .topTrailing) {
@@ -69,12 +85,12 @@ struct WaterTrackerWidgetEntryView : View {
                 CircularProgressView(progress: Double(entry.currentIntake) / Double(entry.targetIntake))
                     .padding(.top, 12)
                     .padding(.bottom, 6)
-
+                
                 Text("\(entry.currentIntake) ml")
                     .font(.title3)
                     .fontWeight(.bold)
                     .foregroundStyle(Color("PrimaryColor"))
-
+                
                 Text(entry.currentIntake >= entry.targetIntake ? "Target Reached!" : "Remaining: \(entry.targetIntake - entry.currentIntake) ml")
                     .font(.caption)
                     .foregroundStyle(Color("Gray"))

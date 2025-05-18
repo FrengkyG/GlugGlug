@@ -15,4 +15,8 @@ struct DataService {
     func currentWaterIntake() -> Int {
         return progress
     }
+    
+    func targetWaterIntake() -> Int {
+        return UserDefaults(suiteName: "group.com.nfajarsa.GlugGlug")?.object(forKey: "goal") as? Int ?? 0
+    }
 }

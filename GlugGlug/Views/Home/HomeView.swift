@@ -130,7 +130,6 @@ struct HomeView: View {
             
             HealthKitManager.shared.startObservingWaterIntake { newProgress in
                 progress = newProgress
-                print("progress", progress)
                 WidgetCenter.shared.reloadTimelines(ofKind: "WaterTrackerWidget")
             }
             

@@ -52,7 +52,6 @@ struct EditGlassView: View {
                             if i > 0 {
                                 Button(role: .destructive) {
                                     selectedIndex -= 1
-                                    print(selectedIndex)
                                     homeViewModel.removeGlass(at: i)
                                 } label: {
                                     Image(systemName: "trash")
