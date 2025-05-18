@@ -45,6 +45,14 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		8F2B4D3B2DDA43F7009B2B66 /* Exceptions for "GlugGlug" folder in "WaterTrackerWidgetExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Managers/AudioManager.swift,
+				"Resources/liquid-bubble.wav",
+			);
+			target = 8FF08FC42DD43F5900109760 /* WaterTrackerWidgetExtension */;
+		};
 		8F985F7E2DA623FB00BD325F /* Exceptions for "GlugGlug" folder in "GlugGlug" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
@@ -66,6 +74,7 @@
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
 				8F985F7E2DA623FB00BD325F /* Exceptions for "GlugGlug" folder in "GlugGlug" target */,
+				8F2B4D3B2DDA43F7009B2B66 /* Exceptions for "GlugGlug" folder in "WaterTrackerWidgetExtension" target */,
 			);
 			path = GlugGlug;
 			sourceTree = "<group>";
