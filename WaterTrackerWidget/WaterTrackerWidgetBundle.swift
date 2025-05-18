@@ -12,7 +12,5 @@ import SwiftUI
 struct WaterTrackerWidgetBundle: WidgetBundle {
     var body: some Widget {
         WaterTrackerWidget()
-//        WaterTrackerWidgetControl()
-//        WaterTrackerWidgetLiveActivity()
     }
 }

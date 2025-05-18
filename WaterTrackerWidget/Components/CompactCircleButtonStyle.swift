@@ -8,10 +8,11 @@
 import SwiftUI
 
 struct CompactCircleButtonStyle: ButtonStyle {
+    let padding: CGFloat
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
-            .padding(8) // padding internal kecil supaya icon lebih pas
-            .background(Circle().fill(Color("PrimaryColor").opacity(0.1)))
-            .scaleEffect(configuration.isPressed ? 0.9 : 1.0)
+            .padding(padding) // padding internal kecil supaya icon lebih pas
+            .background(Circle().fill(Color("PrimaryColor").opacity(0.15)))
+            .scaleEffect(configuration.isPressed ? 0.8 : 1.0)
     }
 }
