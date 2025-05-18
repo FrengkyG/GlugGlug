@@ -328,26 +328,58 @@ class HealthKitManager: ObservableObject {
                 return
             }
             
+//            var streak = 0
+//            var encounteredToday = false
+//            
+//            let statisticsArray = statsCollection.statistics().reversed()
+//            
+//            for statistics in statisticsArray {
+//                let localDate = calendar.startOfDay(for: statistics.startDate.addingTimeInterval(TimeInterval(TimeZone.current.secondsFromGMT())))
+//                let waterConsumption = statistics.sumQuantity()?.doubleValue(for: self.volumeUnit) ?? 0.0
+//                
+//                print("localDate: \(localDate), waterConsumption: \(waterConsumption), goal: \(goal), streak: \(streak)")
+//                
+//                if calendar.isDate(localDate, inSameDayAs: anchorDate) {
+//                    encounteredToday = true
+//                    if waterConsumption >= Double(goal) {
+//                        streak += 1
+//                    }
+//                    continue
+//                }
+//                
+//                if waterConsumption >= Double(goal) {
+//                    streak += 1
+//                } else if encounteredToday {
+//                    streak = 0
+//                    break
+//                }
+//            }
+            
             var streak = 0
-            var encounteredToday = false
-            
-            let statisticsArray = statsCollection.statistics().reversed()
-            
-            for statistics in statisticsArray {
-                let localDate = calendar.startOfDay(for: statistics.startDate.addingTimeInterval(TimeInterval(TimeZone.current.secondsFromGMT())))
+            let sortedStats = statsCollection.statistics().sorted { $0.startDate > $1.startDate }
+            let calendar = Calendar.current
+            var previousDate: Date?
+
+            for statistics in sortedStats {
+                let localDate = calendar.startOfDay(for: statistics.startDate)
                 let waterConsumption = statistics.sumQuantity()?.doubleValue(for: self.volumeUnit) ?? 0.0
                 
-                if calendar.isDate(localDate, inSameDayAs: anchorDate) {
-                    encounteredToday = true
-                    if waterConsumption >= Double(goal) {
-                        streak += 1
-                    }
+                if calendar.isDateInToday(localDate) {
                     continue
                 }
-                
+
+                if let prev = previousDate {
+                    let dayDiff = calendar.dateComponents([.day], from: localDate, to: prev).day ?? 0
+
+                    if dayDiff > 1 {
+                        break
+                    }
+                }
+
                 if waterConsumption >= Double(goal) {
                     streak += 1
-                } else if encounteredToday {
+                    previousDate = localDate
+                } else {
                     break
                 }
             }
