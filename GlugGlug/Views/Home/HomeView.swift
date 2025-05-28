@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import WidgetKit
 
 enum ActiveSheet: Identifiable {
     case editGoal
@@ -19,132 +20,148 @@ enum ActiveSheet: Identifiable {
     }
 }
 
-
 struct HomeView: View {
-    
+
     @EnvironmentObject var homeViewModel: HomeViewModel
-    
+
     @State var startAnimation: CGFloat = 0.0
     @State var progressPercentage: CGFloat = 0.0
     @State private var activeSheet: ActiveSheet?
-    
+
     @State private var selectedGlassAmount: Int = 100
-    
+
     @State private var selectedIndex: Int = 0
-    
-    @State private var progress: Int = 0
-    
+
     @State private var streak: Int = 0
-    
+
+    @AppStorage(
+        "progress",
+        store: UserDefaults(suiteName: "group.com.nfajarsa.GlugGlug")) private
+        var progress: Int = 0
+
     var body: some View {
         NavigationStack {
-            VStack () {
-//                Text("⏰ No reminders set! Add one to stay on track! 💧")
-//                    .font(.subheadline)
-//                    .padding(.vertical, 8)
-//                    .frame(maxWidth: .infinity, alignment: .leading)
-//                    .padding(.horizontal)
-                
-//                AlertBanner(message: "Welcome! 🚀 Set your reminder, target, and tumbler size to stay hydrated! 💧", iconName: "lightbulb.fill", backgroundColor: .yellow.opacity(0.2), foregroundColor: .yellow, textColor: .primary)
-//                    .padding(.bottom, 8)
-//                    .padding(.horizontal)
-                HStack () {
+            VStack {
+                //                Text("⏰ No reminders set! Add one to stay on track! 💧")
+                //                    .font(.subheadline)
+                //                    .padding(.vertical, 8)
+                //                    .frame(maxWidth: .infinity, alignment: .leading)
+                //                    .padding(.horizontal)
+
+                //                AlertBanner(message: "Welcome! 🚀 Set your reminder, target, and tumbler size to stay hydrated! 💧", iconName: "lightbulb.fill", backgroundColor: .yellow.opacity(0.2), foregroundColor: .yellow, textColor: .primary)
+                //                    .padding(.bottom, 8)
+                //                    .padding(.horizontal)
+                HStack {
                     StreakView(streakCount: streak)
                 }
                 .padding()
-                
-                
-                
+
                 Spacer()
-                
+
                 Text("\(progress) ml")
                     .font(.largeTitle)
                     .fontWeight(.bold)
                     .foregroundColor(.blue)
                     .padding(.bottom, 2)
-                
-                HStack{
+
+                HStack {
                     Text("\(Int(progressPercentage * 100))% of your ")
                         .font(.subheadline)
                         .foregroundColor(.gray)
-                    +
-                    Text("\(homeViewModel.goal) ml ")
+                        + Text("\(homeViewModel.goal) ml ")
                         .font(.subheadline)
                         .foregroundColor(.gray)
                         .bold()
-                    +
-                    Text("goal")
+                        + Text("goal")
                         .font(.subheadline)
                         .foregroundColor(.gray)
-                    
+
                     Button {
                         activeSheet = .editGoal
                     } label: {
                         Image(systemName: "square.and.pencil")
-                        
+
                     }
                 }
                 .padding(.bottom)
                 Spacer()
-                
-                WaterIndicator(progress: $progressPercentage, startAnimation: $startAnimation)
-                    .padding(.bottom, 8)
+
+                WaterIndicator(
+                    progress: $progressPercentage,
+                    startAnimation: $startAnimation
+                )
+                .padding(.bottom, 8)
                 Spacer()
-                
-                GlassPicker(items: homeViewModel.glassOptions, selectedIndex: $selectedIndex,
-                            onTap: {
-                    activeSheet = .editGlass
-                })
-                
+
+                GlassPicker(
+                    items: homeViewModel.glassOptions,
+                    selectedIndex: $selectedIndex,
+                    onTap: {
+                        activeSheet = .editGlass
+                    })
+
                 Button {
                     UIImpactFeedbackGenerator(style: .medium).impactOccurred()
                     AudioManager.shared.playSound(named: "liquid-bubble.wav")
-                    HealthKitManager.shared.addWaterAmount(volume: Double(homeViewModel.glassOptions[selectedIndex].amount))
+                    HealthKitManager.shared.addWaterAmount(
+                        volume: Double(
+                            homeViewModel.glassOptions[selectedIndex].amount))
                 } label: {
                     HStack {
                         Image(systemName: "plus")
-                        Text("Add \(homeViewModel.glassOptions[selectedIndex].amount) ml")
-                            .font(.headline)
+                        Text(
+                            "\(homeViewModel.glassOptions[selectedIndex].amount) ml"
+                        )
+                        .font(.headline)
                     }
                 }
                 .buttonStyle(CustomButtonStyle())
                 .padding(.horizontal, 32)
                 .padding(.bottom)
                 Spacer()
-                
+
             }
-            
+
         }
         .onAppear {
             if homeViewModel.goal > 0 {
-                progressPercentage = CGFloat(progress) / CGFloat(homeViewModel.goal)
+                progressPercentage =
+                    CGFloat(progress) / CGFloat(homeViewModel.goal)
             } else {
                 progressPercentage = 0.0
             }
-            
-            HealthKitManager.shared.getConsumedWaterToday { data in DispatchQueue.main.async {
-                self.progress = data ?? 0
-            }}
-            
-            HealthKitManager.shared.startObservingWaterIntake { newProgress in
-                self.progress = newProgress
+
+            HealthKitManager.shared.getConsumedWaterToday { data in
+                DispatchQueue.main.async {
+                    progress = data ?? 0
+                    WidgetCenter.shared.reloadTimelines(
+                        ofKind: "WaterTrackerWidget")
+                }
             }
-            
+
+            HealthKitManager.shared.startObservingWaterIntake { newProgress in
+                progress = newProgress
+                WidgetCenter.shared.reloadTimelines(
+                    ofKind: "WaterTrackerWidget")
+            }
+
             HealthKitManager.shared.getStreak { streak in
                 self.streak = streak
             }
-            
+
         }
         .onChange(of: progress) {
             if homeViewModel.goal > 0 {
-                progressPercentage = CGFloat(progress) / CGFloat(homeViewModel.goal)
+                progressPercentage =
+                    CGFloat(progress) / CGFloat(homeViewModel.goal)
             } else {
                 progressPercentage = 0.0
             }
         }
         .onChange(of: homeViewModel.goal) {
             if homeViewModel.goal > 0 {
-                progressPercentage = CGFloat(progress) / CGFloat(homeViewModel.goal)
+                progressPercentage =
+                    CGFloat(progress) / CGFloat(homeViewModel.goal)
             } else {
                 progressPercentage = 0.0
             }
@@ -157,9 +174,8 @@ struct HomeView: View {
             sheetView(for: item)
         }
 
-        
     }
-    
+
     @ViewBuilder
     func sheetView(for item: ActiveSheet) -> some View {
         switch item {
@@ -169,11 +185,11 @@ struct HomeView: View {
             EditGlassView(selectedIndex: $selectedIndex)
         }
     }
-    
+
     func didDismiss() {
         // Handle the dismissing action.
     }
-    
+
     func getClosestIndex(to center: CGFloat, in geo: GeometryProxy) -> Int {
         var closestIndex = 0
         var minDistance = CGFloat.infinity
@@ -193,5 +209,3 @@ struct HomeView: View {
     HomeView()
         .environmentObject(HomeViewModel())
 }
-
-

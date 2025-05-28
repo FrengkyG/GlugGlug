@@ -3,9 +3,8 @@ import SwiftUI
 struct GlassPicker: View {
     let items: [GlassOption]
     @Binding var selectedIndex: Int
+    let itemWidth: CGFloat = 72
     let onTap: () -> Void
-    
-    let itemWidth: CGFloat = 60
     let spacing: CGFloat = 16
     
     @State private var scrollOffset: CGFloat = 0
@@ -30,7 +29,7 @@ struct GlassPicker: View {
                                 Image(systemName: items[index].icon)
                                     .resizable()
                                     .scaledToFit()
-                                    .frame(width: 24, height: 24)
+                                    .frame(width: itemWidth/2.5, height: itemWidth/2.5)
                                     .padding()
                                     .background(selectedIndex == index ? Color.blue.opacity(0.2) : Color.gray.opacity(0.1))
                                     .clipShape(Circle())
@@ -49,7 +48,7 @@ struct GlassPicker: View {
                                 }
                             }
                         }
-                        .frame(width: itemWidth, height: 100)
+                        .frame(width: itemWidth, height: itemWidth * 1.5)
                     }
                     GeometryReader { geo in
                         let itemMidX = geo.frame(in: .global).midX

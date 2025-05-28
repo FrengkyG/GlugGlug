@@ -22,7 +22,7 @@ struct GlugGlugApp: App {
         WindowGroup {
             ContentView()
                 .environmentObject(homeViewModel)
-                .environmentObject(ReminderViewModel())
+                .environmentObject(reminderViewModel)
         }
     }
 }

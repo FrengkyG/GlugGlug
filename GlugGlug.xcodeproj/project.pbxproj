@@ -6,17 +6,66 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		8FF08FC82DD43F5900109760 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8FF08FC72DD43F5900109760 /* WidgetKit.framework */; };
+		8FF08FCA2DD43F5900109760 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8FF08FC92DD43F5900109760 /* SwiftUI.framework */; };
+		8FF08FDB2DD43F5900109760 /* WaterTrackerWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 8FF08FC52DD43F5900109760 /* WaterTrackerWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		8FF08FD92DD43F5900109760 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5750BCE02D8A53A800EA176B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8FF08FC42DD43F5900109760;
+			remoteInfo = WaterTrackerWidgetExtension;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		8FF08FDC2DD43F5900109760 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				8FF08FDB2DD43F5900109760 /* WaterTrackerWidgetExtension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		5750BCE82D8A53A800EA176B /* GlugGlug.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GlugGlug.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		8FF08FC52DD43F5900109760 /* WaterTrackerWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = WaterTrackerWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		8FF08FC72DD43F5900109760 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
+		8FF08FC92DD43F5900109760 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
+		8FF090872DD6E11400109760 /* WaterTrackerWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = WaterTrackerWidgetExtension.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		8F2B4D3B2DDA43F7009B2B66 /* Exceptions for "GlugGlug" folder in "WaterTrackerWidgetExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Managers/AudioManager.swift,
+				"Resources/liquid-bubble.wav",
+			);
+			target = 8FF08FC42DD43F5900109760 /* WaterTrackerWidgetExtension */;
+		};
 		8F985F7E2DA623FB00BD325F /* Exceptions for "GlugGlug" folder in "GlugGlug" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
 			);
 			target = 5750BCE72D8A53A800EA176B /* GlugGlug */;
+		};
+		8FF08FE02DD43F5900109760 /* Exceptions for "WaterTrackerWidget" folder in "WaterTrackerWidgetExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 8FF08FC42DD43F5900109760 /* WaterTrackerWidgetExtension */;
 		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
@@ -25,8 +74,17 @@
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
 				8F985F7E2DA623FB00BD325F /* Exceptions for "GlugGlug" folder in "GlugGlug" target */,
+				8F2B4D3B2DDA43F7009B2B66 /* Exceptions for "GlugGlug" folder in "WaterTrackerWidgetExtension" target */,
 			);
 			path = GlugGlug;
+			sourceTree = "<group>";
+		};
+		8FF08FCB2DD43F5900109760 /* WaterTrackerWidget */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				8FF08FE02DD43F5900109760 /* Exceptions for "WaterTrackerWidget" folder in "WaterTrackerWidgetExtension" target */,
+			);
+			path = WaterTrackerWidget;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -39,13 +97,25 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		8FF08FC22DD43F5900109760 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8FF08FCA2DD43F5900109760 /* SwiftUI.framework in Frameworks */,
+				8FF08FC82DD43F5900109760 /* WidgetKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
 		5750BCDF2D8A53A800EA176B = {
 			isa = PBXGroup;
 			children = (
+				8FF090872DD6E11400109760 /* WaterTrackerWidgetExtension.entitlements */,
 				5750BCEA2D8A53A800EA176B /* GlugGlug */,
+				8FF08FCB2DD43F5900109760 /* WaterTrackerWidget */,
+				8FF08FC62DD43F5900109760 /* Frameworks */,
 				5750BCE92D8A53A800EA176B /* Products */,
 			);
 			sourceTree = "<group>";
@@ -54,8 +124,18 @@
 			isa = PBXGroup;
 			children = (
 				5750BCE82D8A53A800EA176B /* GlugGlug.app */,
+				8FF08FC52DD43F5900109760 /* WaterTrackerWidgetExtension.appex */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		8FF08FC62DD43F5900109760 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				8FF08FC72DD43F5900109760 /* WidgetKit.framework */,
+				8FF08FC92DD43F5900109760 /* SwiftUI.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -68,10 +148,12 @@
 				5750BCE42D8A53A800EA176B /* Sources */,
 				5750BCE52D8A53A800EA176B /* Frameworks */,
 				5750BCE62D8A53A800EA176B /* Resources */,
+				8FF08FDC2DD43F5900109760 /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				8FF08FDA2DD43F5900109760 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				5750BCEA2D8A53A800EA176B /* GlugGlug */,
@@ -82,6 +164,28 @@
 			productName = GlugGlug;
 			productReference = 5750BCE82D8A53A800EA176B /* GlugGlug.app */;
 			productType = "com.apple.product-type.application";
+		};
+		8FF08FC42DD43F5900109760 /* WaterTrackerWidgetExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8FF08FDF2DD43F5900109760 /* Build configuration list for PBXNativeTarget "WaterTrackerWidgetExtension" */;
+			buildPhases = (
+				8FF08FC12DD43F5900109760 /* Sources */,
+				8FF08FC22DD43F5900109760 /* Frameworks */,
+				8FF08FC32DD43F5900109760 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				8FF08FCB2DD43F5900109760 /* WaterTrackerWidget */,
+			);
+			name = WaterTrackerWidgetExtension;
+			packageProductDependencies = (
+			);
+			productName = WaterTrackerWidgetExtension;
+			productReference = 8FF08FC52DD43F5900109760 /* WaterTrackerWidgetExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
 		};
 /* End PBXNativeTarget section */
 
@@ -94,6 +198,9 @@
 				LastUpgradeCheck = 1620;
 				TargetAttributes = {
 					5750BCE72D8A53A800EA176B = {
+						CreatedOnToolsVersion = 16.2;
+					};
+					8FF08FC42DD43F5900109760 = {
 						CreatedOnToolsVersion = 16.2;
 					};
 				};
@@ -113,12 +220,20 @@
 			projectRoot = "";
 			targets = (
 				5750BCE72D8A53A800EA176B /* GlugGlug */,
+				8FF08FC42DD43F5900109760 /* WaterTrackerWidgetExtension */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		5750BCE62D8A53A800EA176B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8FF08FC32DD43F5900109760 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -135,7 +250,22 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		8FF08FC12DD43F5900109760 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		8FF08FDA2DD43F5900109760 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 8FF08FC42DD43F5900109760 /* WaterTrackerWidgetExtension */;
+			targetProxy = 8FF08FD92DD43F5900109760 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		5750BCF42D8A53A800EA176B /* Debug */ = {
@@ -323,6 +453,62 @@
 			};
 			name = Release;
 		};
+		8FF08FDD2DD43F5900109760 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = WaterTrackerWidgetExtension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 35K6F49UH8;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = WaterTrackerWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = WaterTrackerWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.nfajarsa.GlugGlug.WaterTrackerWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		8FF08FDE2DD43F5900109760 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = WaterTrackerWidgetExtension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 35K6F49UH8;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = WaterTrackerWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = WaterTrackerWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.nfajarsa.GlugGlug.WaterTrackerWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -340,6 +526,15 @@
 			buildConfigurations = (
 				5750BCF72D8A53A800EA176B /* Debug */,
 				5750BCF82D8A53A800EA176B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		8FF08FDF2DD43F5900109760 /* Build configuration list for PBXNativeTarget "WaterTrackerWidgetExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8FF08FDD2DD43F5900109760 /* Debug */,
+				8FF08FDE2DD43F5900109760 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
