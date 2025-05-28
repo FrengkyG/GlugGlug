@@ -18,7 +18,7 @@ struct EditGoalView: View {
             VStack () {
                 Picker("Options", selection: $selectedSegment) {
                     Text("Manual").tag(0)
-                    Text("By Weight").tag(1)
+                    Text("By Body Weight").tag(1)
                     
                 }
                 .pickerStyle(.segmented)
@@ -165,7 +165,15 @@ struct CustomView: View {
             Spacer()
             
             Button {
-                homeViewModel.editGoal(Int(inputValue) ?? 2500)
+                if (Int(inputValue) ?? 0) < 10 {
+                    UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+                    
+                    return
+                } else if (Int(inputValue) ?? 0) > 10000 {
+                    UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+                    return
+                }
+                homeViewModel.editGoal(Int(inputValue) ?? 0)
                 dismiss()
             } label: {
                 Text("Set your target")

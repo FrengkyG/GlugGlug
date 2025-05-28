@@ -71,6 +71,7 @@ class HomeViewModel: ObservableObject {
     func addGlass(icon: String, amount: Int) {
         let newGlass = GlassOption(icon: icon, amount: amount)
         glassOptions.append(newGlass)
+        glassOptions.sort(by: { $0.amount < $1.amount })
         saveGlassOptions()
     }
     
@@ -93,8 +94,8 @@ class HomeViewModel: ObservableObject {
         }
         return [
             GlassOption(icon: "cup.and.saucer.fill", amount: 100),
-            GlassOption(icon: "mug.fill", amount: 200),
-            GlassOption(icon: "takeoutbag.and.cup.and.straw.fill", amount: 300),
+            GlassOption(icon: "mug.fill", amount: 1000),
+            GlassOption(icon: "takeoutbag.and.cup.and.straw.fill", amount: 2000),
         ]
     }
 }
